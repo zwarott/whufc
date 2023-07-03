@@ -13,10 +13,14 @@ class Player(db.Model):
     last_name = db.Column(db.Text, nullable=False)
     born = db.Column(db.Date, nullable=False)
     country = db.Column(
-        db.Text, db.ForeignKey("country.country", ondelete="CASCADE"), nullable=False
+        db.Text,
+        db.ForeignKey("squad.country.country", ondelete="CASCADE"),
+        nullable=False,
     )
     position = db.Column(
-        db.Text, db.ForeignKey("position.position", ondelete="CASCADE"), nullable=False
+        db.Text,
+        db.ForeignKey("squad.position.position", ondelete="CASCADE"),
+        nullable=False,
     )
     created = db.Column(db.DateTime(timezone=True), default=datetime.today())
     updated = db.Column(

@@ -8,9 +8,14 @@ player_match = db.Table(
     db.Column(
         "player_number",
         db.Integer,
-        db.ForeignKey("player.number", ondelete="CASCADE"),
+        db.ForeignKey("squad.player.number", ondelete="CASCADE"),
     ),
-    db.Column("match_id", db.Integer, db.ForeignKey("match.id", ondelete="CASCADE")),
+    db.Column(
+        "match_id",
+        db.Integer,
+        db.ForeignKey("premier_league.match.id", ondelete="CASCADE"),
+    ),
+    schema="premier_league",
 )
 
 
@@ -21,13 +26,19 @@ class Match(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     game_date = db.Column(db.Date, unique=True, nullable=False)
     opponent = db.Column(
-        db.Text, db.ForeignKey("team.team", ondelete="CASCADE"), nullable=False
+        db.Text,
+        db.ForeignKey("premier_league.team.team", ondelete="CASCADE"),
+        nullable=False,
     )
     place = db.Column(
-        db.Text, db.ForeignKey("place.place", ondelete="CASCADE"), nullable=False
+        db.Text,
+        db.ForeignKey("premier_league.place.place", ondelete="CASCADE"),
+        nullable=False,
     )
     result = db.Column(
-        db.Text, db.ForeignKey("result.result", ondelete="CASCADE"), nullable=False
+        db.Text,
+        db.ForeignKey("premier_league.result.result", ondelete="CASCADE"),
+        nullable=False,
     )
     score_whu = db.Column(db.Integer, nullable=False)
     score_opponent = db.Column(db.Integer, nullable=False)
@@ -70,8 +81,8 @@ class Goal(db.Model):
     updated = db.Column(
         db.DateTime(timezone=True), nullable=True, onupdate=datetime.today()
     )
-    id_match = db.Column(db.Integer, db.ForeignKey("match.id"))
-    id_player = db.Column(db.Integer, db.ForeignKey("player.number"))
+    id_match = db.Column(db.Integer, db.ForeignKey("premier_league.match.id"))
+    id_player = db.Column(db.Integer, db.ForeignKey("squad.player.number"))
 
 
 class Assist(db.Model):
@@ -83,8 +94,8 @@ class Assist(db.Model):
     updated = db.Column(
         db.DateTime(timezone=True), nullable=True, onupdate=datetime.today()
     )
-    id_match = db.Column(db.Integer, db.ForeignKey("match.id"))
-    id_player = db.Column(db.Integer, db.ForeignKey("player.number"))
+    id_match = db.Column(db.Integer, db.ForeignKey("premier_league.match.id"))
+    id_player = db.Column(db.Integer, db.ForeignKey("squad.player.number"))
 
 
 class YellowCard(db.Model):
@@ -96,8 +107,8 @@ class YellowCard(db.Model):
     updated = db.Column(
         db.DateTime(timezone=True), nullable=True, onupdate=datetime.today()
     )
-    id_match = db.Column(db.Integer, db.ForeignKey("match.id"))
-    id_player = db.Column(db.Integer, db.ForeignKey("player.number"))
+    id_match = db.Column(db.Integer, db.ForeignKey("premier_league.match.id"))
+    id_player = db.Column(db.Integer, db.ForeignKey("squad.player.number"))
 
 
 class RedCard(db.Model):
@@ -105,13 +116,12 @@ class RedCard(db.Model):
     __table_args__ = {"schema": "premier_league"}
 
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-    player = db.Column(db.Integer, db.ForeignKey("player.number"))
     created = db.Column(db.DateTime(timezone=True), default=datetime.today())
     updated = db.Column(
         db.DateTime(timezone=True), nullable=True, onupdate=datetime.today()
     )
-    id_match = db.Column(db.Integer, db.ForeignKey("match.id"))
-    id_player = db.Column(db.Integer, db.ForeignKey("player.number"))
+    id_match = db.Column(db.Integer, db.ForeignKey("premier_league.match.id"))
+    id_player = db.Column(db.Integer, db.ForeignKey("squad.player.number"))
 
 
 class Team(db.Model):
