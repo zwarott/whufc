@@ -14,18 +14,18 @@ from __init__ import db
 # TO-DO: Write useful comments.
 # TO-DO: Test functionality of this user function.
 def csv_to_table(
-    csv_file: str, table_name: str, commit_changes: bool = True
+    csv_path: str, db_table: str, commit_changes: bool = True
 ) -> DefaultMeta:
     """Import data from csv file.
 
     Import data from csv file into PostgreSQL database using
     psycopg2 module.
 
-    Parametres
+    Parameters
     ----------
-    csv_file : str
+    csv_path : str
         A string representing path to csv file.
-    table_name : str
+    db_table : str
         Name of table within PostgreSQL database.
     commit_changes : bool
         If you do not want commit changes, put False,
@@ -40,10 +40,10 @@ def csv_to_table(
     conn = ps.connect("dbname=whufc user=postgres")
     # Open a cursor to perform database operations.
     cur = conn.cursor()
-    with open(csv_file, "r", encoding="UTF-8") as f:
+    with open(csv_path, "r", encoding="UTF-8") as f:
         # Copy data from selected csv file into specific schema.table.
         cur.copy_expert("COPY squad.country FROM STDIN WITH (FORMAT CSV, HEADER)", f)
-        # If commit_changes = True, change will be commited into database.
+        # If commit_changes = True, change will be commited into the database.
         if commit_changes:
             conn.commit()
             duration = time() - start_time
@@ -51,8 +51,9 @@ def csv_to_table(
                 # Close communication with the database.
                 cur.close(),
                 conn.close(),
+                # Print data import status with import time.
                 print(
-                    f"Data were succesfully imported into table '{table_name}'. Importing time: {duration:.2f} s."
+                    f"Data were succesfully imported into table '{db_table}'. Importing time: {duration:.2f} s."
                 ),
             )
         # If commit_changes = False, changes will not be commited.
@@ -61,7 +62,8 @@ def csv_to_table(
                 # Close communication with the database.
                 cur.close(),
                 conn.close(),
-                print(f"Data were not imported into table '{table_name}'"),
+                # print data import status.
+                print(f"Data were not imported into table '{db_table}'"),
             )
 
 
