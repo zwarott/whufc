@@ -11,7 +11,8 @@ class DevelopmentConfig(Config):
     DEVELOPMENT = True
     # Enable debug mode, that will refresh the page when you make changes.
     DEBUG = True
-    # Import database URL from .env file (environment configuration -> this file allows you tu put your environment variables inside a file).
+    # Import database URL from .env file (environment configuration
+    # -> this file allows you tu put your environment variables inside a file).
     SQLALCHEMY_DATABASE_URI = os.getenv("DEVELOPMENT_DATABASE_URL")
 
 
@@ -33,7 +34,8 @@ class ProductionConfig(Config):
 
 
 # Dictonary with keys that refer to each configuration modes -> objects.
-# Key: variable included within CONFIG_MODE | value: object with specific configuration.
+# Key: variable included within CONFIG_MODE
+# value: object with specific configuration.
 config = {
     "development": DevelopmentConfig,
     "testing": TestingConfig,
